@@ -4,7 +4,7 @@ __all__ = ("SingletonModuleMeta",)
 
 
 import weakref
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import equinox as eqx
 
@@ -17,7 +17,9 @@ if TYPE_CHECKING:
 else:
     ModuleMeta = type(eqx.Module)
 
-_singleton_insts: weakref.WeakKeyDictionary[type, object] = weakref.WeakKeyDictionary()
+_singleton_insts: weakref.WeakKeyDictionary[type, eqx.Module] = (
+    weakref.WeakKeyDictionary()
+)
 
 
 class SingletonModuleMeta(ModuleMeta):
@@ -87,11 +89,11 @@ class SingletonModuleMeta(ModuleMeta):
 
     """
 
-    def __call__(cls, /, *args: Any, **kwargs: Any) -> Any:
+    def __call__(cls, /, *args: object, **kwargs: object) -> eqx.Module:  # noqa: N805
         # Check if instance already exists
         if cls in _singleton_insts:
             return _singleton_insts[cls]
         # Create new instance and cache it
-        self = super().__call__(*args, **kwargs)  # type: ignore[no-untyped-call]
+        self: eqx.Module = super().__call__(*args, **kwargs)  # type: ignore[no-untyped-call]
         _singleton_insts[cls] = self
         return self
