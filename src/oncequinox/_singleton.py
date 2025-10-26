@@ -4,16 +4,23 @@ __all__ = ("SingletonModuleMeta",)
 
 
 import weakref
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import equinox as eqx
 
-ModuleMeta: type[type[eqx.Module]] = type(eqx.Module)
+if TYPE_CHECKING:
+    # Try to use the actual metaclass for better type checking
+    try:
+        from equinox._module._module import _ModuleMeta as ModuleMeta
+    except ImportError:
+        ModuleMeta = type(eqx.Module)  # type: ignore[misc]
+else:
+    ModuleMeta = type(eqx.Module)
 
 _singleton_insts: weakref.WeakKeyDictionary[type, object] = weakref.WeakKeyDictionary()
 
 
-class SingletonModuleMeta(ModuleMeta):  # type: ignore[misc]
+class SingletonModuleMeta(ModuleMeta):
     """A metaclass for singleton Equinox modules.
 
     This metaclass ensures that only one instance of a class exists. Multiple calls
@@ -85,6 +92,6 @@ class SingletonModuleMeta(ModuleMeta):  # type: ignore[misc]
         if cls in _singleton_insts:
             return _singleton_insts[cls]
         # Create new instance and cache it
-        self = super().__call__(*args, **kwargs)
+        self = super().__call__(*args, **kwargs)  # type: ignore[no-untyped-call]
         _singleton_insts[cls] = self
         return self

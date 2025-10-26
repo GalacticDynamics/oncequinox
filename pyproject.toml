@@ -3,7 +3,7 @@ name = "oncequinox"
 dynamic = ["version"]
 description = "Create singleton Equinox modules."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [
   { name = "Nathaniel Starkman", email = "nstarman@users.noreply.github.com" },
 ]
@@ -15,7 +15,6 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -26,7 +25,8 @@ classifiers = [
 ]
 license.file = "LICENSE"
 dependencies = [
-    "equinox>=0.11.10",
+    "equinox>=0.12.0",
+    "jax>=0.4.38",
 ]
 
 [project.urls]
@@ -56,6 +56,7 @@ build = [
 lint = [
   "pre-commit>=4.1.0",
   "pylint>=3.3.8",
+  "mypy>=1.14.1",
 ]
 nox = ["nox>=2024.10.9"]
 test = [
@@ -105,7 +106,7 @@ skip = "uv.lock"
   disallow_untyped_defs    = false
   enable_error_code        = ["ignore-without-code", "redundant-expr", "truthy-bool"]
   files                    = ["src"]
-  python_version           = "3.9"
+  python_version           = "3.10"
   strict                   = true
   warn_unreachable         = true
   warn_unused_configs      = true
@@ -114,6 +115,10 @@ skip = "uv.lock"
     disallow_incomplete_defs = true
     disallow_untyped_defs    = true
     module                   = "oncequinox.*"
+
+  [[tool.mypy.overrides]]
+    ignore_missing_imports = true
+    module                 = ["jax.*", "jaxtyping.*", "equinox.*"]
 
 
 [tool.ruff]
@@ -153,6 +158,6 @@ skip = "uv.lock"
     "missing-module-docstring",
     "wrong-import-position",
   ]
-  py-version = "3.9"
+  py-version = "3.10"
   reports.output-format = "colorized"
   similarities.ignore-imports = "yes"
