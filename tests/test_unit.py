@@ -1,8 +1,5 @@
 """Unit tests."""
 
-import gc
-import weakref
-
 import equinox as eqx
 import pytest
 

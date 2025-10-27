@@ -1,7 +1,10 @@
 <h1 align='center'> oncequinox </h1>
 <h2 align="center">Create singleton Equinox modules.</h2>
 
-This is a micro-package, containing the single metaclass `SingletonModuleMeta`. </br> `SingletonModuleMeta` can be used to create Equinox modules that are singletons, meaning that only one instance of the module can exist at any given time.
+This is a micro-package, containing the single metaclass `SingletonModuleMeta`.
+</br> `SingletonModuleMeta` can be used to create Equinox modules that are
+singletons, meaning that only one instance of the module can exist at any given
+time.
 
 ## Installation
 
@@ -26,8 +29,10 @@ Create a singleton Equinox module:
 import equinox as eqx
 from oncequinox import SingletonModuleMeta
 
+
 class MySingletonModule(eqx.Module, metaclass=SingletonModuleMeta):
     value: str = "this is a singleton module"
+
 
 # Create the singleton instance
 singleton1 = MySingletonModule()
@@ -36,7 +41,6 @@ singleton1 = MySingletonModule()
 singleton2 = MySingletonModule()
 
 print(singleton1 is singleton2)  # True
-
 ```
 
 ### Singleton Per Class
@@ -47,11 +51,14 @@ Different classes maintain separate singleton instances:
 import equinox as eqx
 from oncequinox import SingletonModuleMeta
 
+
 class ConfigA(eqx.Module, metaclass=SingletonModuleMeta):
     name: str = "A"
 
+
 class ConfigB(eqx.Module, metaclass=SingletonModuleMeta):
     name: str = "B"
+
 
 config_a = ConfigA()
 config_b = ConfigB()
@@ -59,7 +66,6 @@ config_b = ConfigB()
 print(config_a is config_b)  # False
 print(config_a.name)  # A
 print(config_b.name)  # B
-
 ```
 
 ### With Initialization Arguments
@@ -70,11 +76,13 @@ Arguments are only used for the first instantiation:
 import equinox as eqx
 from oncequinox import SingletonModuleMeta
 
+
 class HasValue(eqx.Module, metaclass=SingletonModuleMeta):
     value: int
 
     def __init__(self, value: int):
         self.value = value
+
 
 v1 = HasValue(10)
 print(v1.value)  # 10
@@ -83,7 +91,6 @@ print(v1.value)  # 10
 v2 = HasValue(20)
 print(v2.value)  # 10
 print(v1 is v2)  # True
-
 ```
 
 <!-- SPHINX-START -->
