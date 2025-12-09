@@ -20,6 +20,7 @@ def lint(s: nox.Session, /) -> None:
     """Run the linter."""
     precommit(s)  # reuse pre-commit session
     pylint(s)  # reuse pylint session
+    mypy(s)  # reuse mypy session
 
 
 @session(uv_groups=["lint"], reuse_venv=True)
@@ -31,8 +32,13 @@ def precommit(s: nox.Session, /) -> None:
 @session(uv_groups=["lint"], reuse_venv=True)
 def pylint(s: nox.Session, /) -> None:
     """Run PyLint."""
-    s.install(".", "pylint")
     s.run("pylint", "oncequinox", *s.posargs)
+
+
+@session(uv_groups=["lint"], reuse_venv=True)
+def mypy(s: nox.Session, /) -> None:
+    """Run mypy."""
+    s.run("mypy", "src/zeroth", *s.posargs)
 
 
 # =============================================================================
