@@ -94,6 +94,6 @@ class SingletonModuleMeta(ModuleMeta):
         if cls in _singleton_insts:
             return _singleton_insts[cls]
         # Create new instance and cache it
-        self: eqx.Module = super().__call__(*args, **kwargs)  # type: ignore[no-untyped-call]
+        self: eqx.Module = super().__call__(*args, **kwargs)
         _singleton_insts[cls] = self
         return self
