@@ -26,17 +26,8 @@ def lint(s: nox.Session, /) -> None:
 
 @session(uv_groups=["lint"], reuse_venv=True)
 def precommit(s: nox.Session, /) -> None:
-    """Run pre-commit."""
-    # Not a real commit -- no-commit-to-branch would always fail here.
-    # Merge into any SKIP already set, rather than clobber it.
-    skip = ",".join(filter(None, [os.environ.get("SKIP"), "no-commit-to-branch"]))
-    s.run(
-        "pre-commit",
-        "run",
-        "--all-files",
-        *s.posargs,
-        env={"SKIP": skip},
-    )
+    """Run prek."""
+    s.run("prek", "run", "--all-files", *s.posargs)
 
 
 @session(uv_groups=["lint"], reuse_venv=True)
