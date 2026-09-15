@@ -29,10 +29,7 @@ jobs:
         uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
       - uses: j178/prek-action@4e14d07f9231acabce116ccfca13b13dd9755ece # v3.0.0
         env:
-          # no-commit-to-branch always fails here: CI checks out the real
-          # `main` branch on every push, which is exactly what this hook
-          # exists to block for a human running `git commit` locally (it's
-          # scoped to stages: [pre-commit], so it never fires on push).
+          # Not a real commit -- no-commit-to-branch would always fail here.
           SKIP: no-commit-to-branch
       - name: Run PyLint
         run: uv run --group nox nox -s pylint -- --output-format=github
