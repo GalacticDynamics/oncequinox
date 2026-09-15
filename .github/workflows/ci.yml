@@ -30,9 +30,9 @@ jobs:
       - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
         env:
           # no-commit-to-branch always fails here: CI checks out the real
-          # `main` branch on every push, which is exactly what the hook
-          # exists to block for a human running `git commit`/`git push`
-          # locally.
+          # `main` branch on every push, which is exactly what this hook
+          # exists to block for a human running `git commit` locally (it's
+          # scoped to stages: [pre-commit], so it never fires on push).
           SKIP: no-commit-to-branch
       - name: Run PyLint
         run: uv run --group nox nox -s pylint -- --output-format=github
